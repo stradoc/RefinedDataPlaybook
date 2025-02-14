@@ -1,43 +1,60 @@
-# The Refined Data Playbook
+# The Refined Data Playbook 
 
 ## Table of Contents  
-- [The Problem](#the-problem)  
 - [What is Data Refinement?](#what-is-data-refinement)  
-- [Historical Examples](#historical-examples)  
+- [AI is like an Engine, It Needs Refined Fuel](#ai-is-like-an-engine-it-needs-refined-fuel)  
+- [The Scope of Data Refinement](#the-scope-of-data-refinement)  
+- [The Problem](#the-problem)  
+- [Technical Scope](#technical-scope)  
+- [Case Studies](#case-studies)  
   - [Optum Healthcare AI Bias (2019)](#optum-healthcare-ai-bias-2019)  
   - [Zillow AI Collapse (2021)](#zillow-ai-collapse-2021)  
   - [Google Photos Gorillas Incident (2015)](#google-photos-gorillas-incident-2015)  
 
-## What is Data Refinement?
-Traditional "data cleaning" focuses on handling missing values and fixing typos, but real-world AI failures show that this is **not enough.** Many AI models fail not because of bad architecture but because their **data was not properly structured, balanced, or scaled.**  
+## What is Data Refinement?  
+"Data cleaning" is often reduced to removing duplicates and NaN values, but it encompasses much more. Scaling, normalization, and feature engineering are critical steps that shape model performance.  
 
-### We're Having an Industrial Revolution, and AI is the Combustion Engine.
-The world is undergoing another Industrial Revolution, with AI playing the role that the combustion engine did in the 19th and 20th centuries. But just like engines are with crude oil, AI cannot function properly without clean, structured, and properly processed data.
+Because of its depth and impact, this playbook uses the term **"Data Refinement"** to emphasize its importance beyond basic cleaning.  
 
-This playbook expands the definition of **data cleaning** into a broader concept called **Data Refinement**, which includes:  
+### AI is like an Engine, It Needs Refined Fuel
+AI is transforming industries just like the combustion engine did. But just like crude oil, data needs refinement before it becomes usable by machine learning algorithms. *(Garbage in, Garbage out.)*   
 
-- **Balancing Datasets** – Desampling (downsampling) overrepresented classes and upsampling underrepresented ones.  
-- **Scaling & Normalization** – Ensuring that features do not dominate due to magnitude differences (Z-score, Min-Max, IQR).  
-- **Outlier Handling** – Removing or transforming extreme values to prevent them from skewing model performance.  
-- **Feature Engineering** – Structuring and transforming data to improve predictive power.  
+### The Scope of Data Refinement  
+Data Refinement generally includes, but is not limited to:  
 
-Just as crude oil must go through multiple **processing stages** before it becomes gasoline, AI data must go through **scaling, balancing, and structuring** before it becomes useful for machine learning models.  
+- **Balancing Datasets** – Addressing imbalanced classes through upsampling/downsampling.  
+- **Scaling & Normalization** – Preventing numerical features from dominating due to magnitude differences.  
+- **Outlier Handling** – Adjusting extreme values that distort model performance.  
+- **Feature Engineering** – Structuring and transforming data for better predictive power.
 
-Data Refinement is not just about removing NaNs or fixing formatting issues—it is about making data truly usable for AI.
+Refined data is critical to ensuring competent, reliable AI systems.
 
 ## The Problem:
-AI models are notoriously difficult to deploy into the real world. A lot of the industry sees their models performing well in the lab, but when they're deployed, they break.
+AI models perform well in controlled environments but often **fail in real-world deployment**—not because of bad models, but **because they are trained on raw, unrefined data.**  
 
-The hypothesis presented in this playbook is that this **isn't** because of *bad models*, but *bad data*.
 
-## Historical Examples:
+
+## Technical Scope  
+This repository is structured into two key parts:  
+
+- **Case Studies** – Real-world examples where AI failures were caused by poor data handling.  
+- **Experiments** – Testing the impact of **data refinement techniques** on model performance, including:  
+  - Normalization (Z-score, Min-Max, IQR)  
+  - Scaling & Feature Engineering  
+  - Handling Outliers & Imbalanced Data  
+  - Desampling and Upsampling  
+
+Performance will be measured using **accuracy, F1-score, and recall.**  
+
+
+## Case Studies:
 
 ### Optum Healthcare AI Bias (2019) – A Data Scaling Failure
 
 <details>
   <summary>Click to expand</summary>
 
-In 2019, *Science* published a critical analysis of an Optum Healthcare AI system, which is widely used in U.S. hospitals to identify patients who might need extra medical care. The AI assigned risk scores to patients, (numerical values predicting future healthcare needs), but these scores favored white patients over Black patients.
+In 2019, *Science* published a critical analysis of an Optum Healthcare AI system, which is widely used in U.S. hospitals to identify patients who might need extra medical care. The AI assigned risk scores to patients, (numerical values predicting future healthcare needs), resulting in an unintended bias where Black patients received lower risk scores than white patients.
 
 Why? Because one of the factors used to determine risk score dominated all the others, healthcare spending.
 
@@ -46,7 +63,7 @@ Why? Because one of the factors used to determine risk score dominated all the o
 - Since Healthcare spending was in the tens of thousands, but diagnosis was measured with either a 0 or a 1, the algorithm thought that a 1 dollar increase in healthcare spending was as significant as a 1 used to differentiate diagnoses.
 - This dominated the distribution, resulting in massive biases.
 
-The solution? min-max or z-score normalization, which would have allowed for the algorithmn to understand that a 1 dollar increase of healthcare spending is weighed less than a 1 used to differentiate diagnoses.
+The solution? Min-max or z-score normalization, which would have helped the algorithm recognize that a $1 increase in healthcare spending should not be treated as equivalent to a binary diagnosis value.
 
 The **model** wasn't flawed, the **lack of data refinement was**.
 
@@ -88,7 +105,7 @@ Why? Because the dataset was imbalanced, leading to poor generalization for unde
 
 - The AI was trained on significantly more images of lighter-skinned individuals, making it highly accurate in recognizing those faces but unreliable for others.  
 - The dataset lacked sufficient diversity, meaning the model did not learn robust decision boundaries for darker-skinned individuals.  
-- Instead of correcting the dataset and retraining the model, Google initially attempted a quick fix by blocking the labels "gorilla," "chimpanzee," and "monkey" altogether, avoiding the core issue rather than addressing it.  
+- Google’s initial response was to block the labels "gorilla," "chimpanzee," and "monkey," which prevented further misclassification but did not resolve the underlying dataset imbalance.
 
 The solution? Proper dataset balancing techniques such as upsampling underrepresented classes, downsampling overrepresented ones, and synthetic data augmentation. Ensuring equal class representation in training data would have significantly reduced misclassification errors.
 
